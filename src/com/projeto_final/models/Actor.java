@@ -1,10 +1,27 @@
 package com.projeto_final.models;
 
 public class Actor {
+    private int id;
     private String name;
     private long age;
     private String nationality;
     private long yearsActing;
+
+    public Actor(int id, String name, long age, String nationality, long yearsActing) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.nationality = nationality;
+        this.yearsActing = yearsActing;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
