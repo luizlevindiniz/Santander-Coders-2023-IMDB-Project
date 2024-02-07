@@ -18,18 +18,6 @@ public class Movie {
     public Movie() {
     }
 
-    // constructor
-    public Movie(int id, String title, LocalDate releaseDate, BigDecimal budget, String description,
-                 List<Actor> listOfActors, List<Director> listOfDirectors) {
-        this.id = id;
-        this.title = title;
-        this.releaseDate = releaseDate;
-        this.budget = budget;
-        this.description = description;
-        this.listOfActors = listOfActors;
-        this.listOfDirectors = listOfDirectors;
-    }
-
     public int getId() {
         return id;
     }
@@ -38,32 +26,16 @@ public class Movie {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public LocalDate getReleaseDate() {
-        return releaseDate;
     }
 
     public void setReleaseDate(LocalDate releaseDate) {
         this.releaseDate = releaseDate;
     }
 
-    public BigDecimal getBudget() {
-        return budget;
-    }
-
     public void setBudget(BigDecimal budget) {
         this.budget = budget;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setDescription(String description) {
