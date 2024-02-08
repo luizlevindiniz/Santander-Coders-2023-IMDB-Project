@@ -10,7 +10,7 @@ public interface MoviesRepository {
 
     void deleteMovie(int id, List<Movie> listOfMovies);
 
-    void editMovie(Scanner scanner, List<Movie> listOfMovies);
+    void editMovie(int id, Scanner scanner, List<Movie> listOfMovies);
 
     List<Movie> searchMovie(String title, List<Movie> listOfMovies);
 

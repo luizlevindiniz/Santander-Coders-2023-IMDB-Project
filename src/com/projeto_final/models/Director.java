@@ -1,8 +1,8 @@
 package com.projeto_final.models;
 
 public class Director {
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
     public Director(int id, String name) {
         this.id = id;

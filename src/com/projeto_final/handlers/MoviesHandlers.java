@@ -4,6 +4,9 @@ import com.projeto_final.models.Actor;
 import com.projeto_final.models.Director;
 import com.projeto_final.models.Movie;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -31,6 +34,30 @@ public class MoviesHandlers {
         }
 
         return id;
+    }
+
+    public static String handleMovieTitleInput(Scanner scanner){
+        System.out.print("Title: ");
+        return scanner.nextLine();
+    }
+
+    public static LocalDate handleMovieReleaseDateInput(Scanner scanner){
+        System.out.print("Release Date [yyyy-mm-dd]: ");
+        String rawReleaseDate = scanner.nextLine().trim();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(rawReleaseDate, dateFormat);
+    }
+
+    public static BigDecimal handleMovieBudgetInput(Scanner scanner){
+        System.out.print("Budget: ");
+        String stringBudget = scanner.nextLine();
+        // remove newline
+        return new BigDecimal(stringBudget);
+    }
+
+    public static String handleMovieDescriptionInput(Scanner scanner){
+        System.out.print("Description: ");
+        return scanner.nextLine();
     }
 
     public static List<Actor> handleActorsInput(Scanner scanner) {
@@ -88,3 +115,4 @@ public class MoviesHandlers {
         return directorList;
     }
 }
+

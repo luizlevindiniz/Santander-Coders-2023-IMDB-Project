@@ -32,15 +32,18 @@ public class AppHandlers {
                         System.out.print("Insert movie id to delete: ");
                         int deletionId = scanner.nextInt();
                         scanner.nextLine(); // remove newline
+                        moviesController.deleteMovie(deletionId,listOfMovies);
                         break;
                     case 3:
                         System.out.print("Insert movie id to update: ");
                         int updateId = scanner.nextInt();
                         scanner.nextLine(); // remove newline
+                        moviesController.editMovie(updateId,scanner,listOfMovies);
                         break;
                     case 4:
                         System.out.print("Title to search for: ");
                         String titleToSearch = scanner.nextLine();
+                        System.out.println(moviesController.searchMovie(titleToSearch,listOfMovies));
                         break;
                     default:
                         break;
@@ -53,6 +56,8 @@ public class AppHandlers {
                 System.out.println("Sorry, invalid release date format!");
             } catch (NumberFormatException e) {
                 System.out.println("Sorry, invalid budget format!");
+            } catch (RuntimeException e){
+                System.out.println(e.getMessage());
             }
         }
 

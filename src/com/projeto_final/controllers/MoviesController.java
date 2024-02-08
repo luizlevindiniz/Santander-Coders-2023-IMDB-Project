@@ -8,13 +8,12 @@ import com.projeto_final.repositories.MoviesRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-import static com.projeto_final.handlers.MoviesHandlers.handleMovieIdInput;
-import static com.projeto_final.handlers.MoviesHandlers.handleActorsInput;
-import static com.projeto_final.handlers.MoviesHandlers.handleDirectorsInput;
+import static com.projeto_final.handlers.MoviesHandlers.*;
 
 public class MoviesController implements MoviesRepository {
     @Override
@@ -24,21 +23,13 @@ public class MoviesController implements MoviesRepository {
         int id = handleMovieIdInput(scanner, listOfMovies);
 
         // Scanning other attributes
-        System.out.print("Title: ");
-        String title = scanner.nextLine();
+        String title = handleMovieTitleInput(scanner);
 
-        System.out.print("Release Date [yyyy-mm-dd]: ");
-        String rawReleaseDate = scanner.nextLine().trim();
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate releaseDate = LocalDate.parse(rawReleaseDate, dateFormat);
+        LocalDate releaseDate = handleMovieReleaseDateInput(scanner);
 
-        System.out.print("Budget: ");
-        String stringBudget = scanner.nextLine();
-        BigDecimal budget = new BigDecimal(stringBudget);
-        // remove newline
+        BigDecimal budget = handleMovieBudgetInput(scanner);
 
-        System.out.print("Description: ");
-        String description = scanner.nextLine();
+        String description = handleMovieDescriptionInput(scanner);
 
         // Scanning actors and directors
         List<Actor> actorsList = handleActorsInput(scanner);
@@ -51,16 +42,51 @@ public class MoviesController implements MoviesRepository {
 
     @Override
     public void deleteMovie(int id, List<Movie> listOfMovies) {
-
+        Optional<Movie> movieToDelete = listOfMovies.stream().filter(movie -> movie.getId() == id).findFirst();
+        if(movieToDelete.isPresent()){
+            listOfMovies.remove(movieToDelete.get());
+        }
+        else {
+            throw new RuntimeException("Movie not found!");
+        }
     }
 
     @Override
-    public void editMovie(Scanner scanner, List<Movie> listOfMovies) {
+    public void editMovie(int id ,Scanner scanner, List<Movie> listOfMovies) {
+        OptionalInt movieToEditIndex = IntStream.range(0,listOfMovies.size())
+                .filter(movieIndex -> id == listOfMovies.get(movieIndex).getId()).findFirst();
 
+        if(movieToEditIndex.isPresent()){
+            System.out.println("Editing movie " + listOfMovies.get(movieToEditIndex.getAsInt()).getTitle() + "...");
+        }
+        else {
+            throw new RuntimeException("Movie not found!");
+        }
+
+        // Scanning other attributes
+        String newTitle = handleMovieTitleInput(scanner);
+
+        LocalDate newReleaseDate = handleMovieReleaseDateInput(scanner);
+
+        BigDecimal newBudget = handleMovieBudgetInput(scanner);
+
+        String newDescription = handleMovieDescriptionInput(scanner);
+
+        // Scanning actors and directors
+        List<Actor> newActorsList = handleActorsInput(scanner);
+        List<Director> newDirectorList = handleDirectorsInput(scanner);
+
+        Movie updatedMovie = new MoviesBuilder().withId(id).withTitle(newTitle).withReleaseDate(newReleaseDate)
+                .withBudget(newBudget).withDescription(newDescription).withActors(newActorsList)
+                .withDirectors(newDirectorList).build();
+
+        listOfMovies.set(movieToEditIndex.getAsInt(),updatedMovie);
     }
 
     @Override
     public List<Movie> searchMovie(String title, List<Movie> listOfMovies) {
-        return null;
+        Stream<Movie> filteredMovieList = listOfMovies.stream().filter(movie -> movie.getTitle().toLowerCase()
+                .contains(title.toLowerCase()));
+        return filteredMovieList.collect(Collectors.toList());
     }
 }
